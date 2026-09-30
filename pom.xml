@@ -423,4 +423,31 @@
 		</profile>
 	</profiles>
 
+	<repositories>
+		<repository>
+			<id>azure-maven-repo-snapshot</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/snapshot</url>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>azure-maven-repo-release</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/release</url>
+			<releases>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>azure-maven-repo-snapshot</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/snapshot</url>
+		</snapshotRepository>
+		<repository>
+			<id>azure-maven-repo-release</id>
+			<url>bs://gstmavenrepo.blob.core.windows.net/release</url>
+		</repository>
+	</distributionManagement>
+
 </project>
