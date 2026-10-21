@@ -58,9 +58,11 @@ pipeline {
                 sourceDirectories: [
                         [path: 'apiphany-core/src/main/java'],
                         [path: 'apiphany-httpclient5/src/main/java'],
+                        [path: 'apiphany-okhttp/src/main/java'],
                         [path: 'apiphany-spring/src/main/java'],
                         [path: 'apiphany-core/target/generated-sources/annotations'],
                         [path: 'apiphany-httpclient5/target/generated-sources/annotations'],
+                        [path: 'apiphany-okhttp/target/generated-sources/annotations'],
                         [path: 'apiphany-spring/target/generated-sources/annotations']],
                 qualityGates: [
                         [threshold: 28.0, metric: 'LINE', baseline: 'PROJECT', criticality: 'UNSTABLE'],
@@ -101,7 +103,7 @@ pipeline {
             script {
                MAVEN_DEPLOY_REPO = env.BUILD_TYPE == 'RELEASE' ? 'azure-maven-repo-release' : 'azure-maven-repo-snapshot'
                sh 'mvn --settings $MVN_SETTINGS versions:set -DnewVersion=${RELEASE_VERSION} -DprocessAllModules=true -DgenerateBackupPoms=false'
-               sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-core,apiphany-httpclient5,apiphany-spring,apiphany-test -am"
+               sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-core,apiphany-httpclient5,apiphany-okhttp,apiphany-spring -am"
                appendToBuildDescription("${RELEASE_VERSION}")
             }
         }
