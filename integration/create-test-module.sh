@@ -27,7 +27,7 @@ cat > "$MODULE_NAME/pom.xml" <<EOF
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.github.raduking</groupId>
+		<groupId>com.boatyardx.apiphany</groupId>
 		<artifactId>$PARENT_ARTIFACT</artifactId>
 		<version>$VERSION</version>
 		<relativePath>../../pom.xml</relativePath>
@@ -69,14 +69,14 @@ cat > "$MODULE_NAME/pom.xml" <<EOF
 	
 		<!-- Apiphany -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany</artifactId>
 			<version>\${project.version}</version>
 		</dependency>
 
 		<!-- Testing -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-test</artifactId>
 			<version>\${project.version}</version>
 			<scope>test</scope>

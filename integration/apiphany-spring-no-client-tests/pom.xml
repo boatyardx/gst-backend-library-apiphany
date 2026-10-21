@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.github.raduking</groupId>
+		<groupId>com.boatyardx.apiphany</groupId>
 		<artifactId>apiphany-parent</artifactId>
 		<version>1.2.22</version>
 		<relativePath>../../pom.xml</relativePath>
@@ -48,7 +48,7 @@
 
 		<!-- Apiphany -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-spring</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -82,21 +82,21 @@
 
 		<!-- Testing -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-test</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-integration-tests</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-integration-tests</artifactId>
 			<version>${project.version}</version>
 			<type>test-jar</type>
