@@ -10,7 +10,7 @@
 		before IDEs will be able to correctly see the child module dependencies (ex: apiphany-core depending on apiphany-test)  
 	-->
 
-	<groupId>io.github.raduking</groupId>
+	<groupId>com.boatyardx.apiphany</groupId>
 	<artifactId>apiphany-parent</artifactId>
 	<version>1.2.22</version>
 	<packaging>pom</packaging>

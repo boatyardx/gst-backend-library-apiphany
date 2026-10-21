@@ -56,15 +56,17 @@ Current release `1.2.22`
 
 ### Getting Started
 
-Maven: add this dependency to your `pom.xml`
+Maven (internal fork): add this dependency to your `pom.xml`
 
 ```xml
 <dependency>
-    <groupId>io.github.raduking</groupId>
+    <groupId>com.boatyardx.apiphany</groupId>
     <artifactId>apiphany</artifactId>
     <version>1.2.22</version>
 </dependency>
 ```
+
+The upstream open-source project publishes under `io.github.raduking` on Maven Central (badges above). This repository uses `com.boatyardx.apiphany` for releases on the company Maven repository.
 
 You can also use the latest development build, but you need to build it yourself.
 
