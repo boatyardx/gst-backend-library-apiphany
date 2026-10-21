@@ -40,6 +40,7 @@
 	</scm>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<!--
 			The apiphanyArgLine property is only used during the build process of the library 
 			and does not affect projects that consume your jar as a dependency. 
