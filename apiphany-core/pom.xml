@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.github.raduking</groupId>
+		<groupId>com.boatyardx.apiphany</groupId>
 		<artifactId>apiphany-parent</artifactId>
 		<version>1.2.22</version>
 	</parent>
@@ -128,7 +128,7 @@
 
 		<!-- Testing -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-test</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>

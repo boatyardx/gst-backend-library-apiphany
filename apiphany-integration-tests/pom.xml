@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.github.raduking</groupId>
+		<groupId>com.boatyardx.apiphany</groupId>
 		<artifactId>apiphany-parent</artifactId>
 		<version>1.2.22</version>
 	</parent>
@@ -40,6 +40,7 @@
 	</scm>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<!--
 			The apiphanyArgLine property is only used during the build process of the library 
 			and does not affect projects that consume your jar as a dependency. 
@@ -62,13 +63,13 @@
 
 		<!-- Apiphany modules -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-test</artifactId>
 			<version>${project.version}</version>
 		</dependency>
