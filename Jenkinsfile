@@ -16,16 +16,14 @@ pipeline {
   }
 
   environment {
-    SNAPSHOT_BRANCH = 'develop'
     RELEASE_BRANCH = 'master'
-    BUILD_TYPE = "${env.BRANCH_NAME == 'master' ? 'RELEASE' : 'SNAPSHOT'}"
+    BUILD_TYPE = 'RELEASE'
   }
 
   stages {
     stage('Analyze Dependencies') {
       steps {
         setEnvProperties()
-        mavenParentVersionAnalysis()
         mavenDependencyVersionAnalysis()
       }
     }
@@ -77,7 +75,7 @@ pipeline {
 //     }
 
     stage('Determine version') {
-      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH || env.BRANCH_NAME == env.SNAPSHOT_BRANCH } }
+      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH } }
 
       steps {
         withCredentials([file(credentialsId: 'maven-credentials', variable: 'MVN_SETTINGS')]) {
@@ -96,12 +94,12 @@ pipeline {
     }
 
     stage('Install library') {
-      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH || env.BRANCH_NAME == env.SNAPSHOT_BRANCH } }
+      when { expression { env.BRANCH_NAME == env.RELEASE_BRANCH } }
 
       steps {
         withCredentials([file(credentialsId: 'maven-credentials', variable: 'MVN_SETTINGS')]) {
             script {
-               MAVEN_DEPLOY_REPO = env.BUILD_TYPE == 'RELEASE' ? 'azure-maven-repo-release' : 'azure-maven-repo-snapshot'
+               MAVEN_DEPLOY_REPO = 'azure-maven-repo-release'
                sh 'mvn --settings $MVN_SETTINGS versions:set -DnewVersion=${RELEASE_VERSION} -DprocessAllModules=true -DgenerateBackupPoms=false'
                sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-core,apiphany-httpclient5,apiphany-okhttp,apiphany-spring -am"
                appendToBuildDescription("${RELEASE_VERSION}")
