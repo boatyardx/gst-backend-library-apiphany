@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.github.raduking</groupId>
+		<groupId>com.boatyardx.apiphany</groupId>
 		<artifactId>apiphany-parent</artifactId>
 		<version>1.2.22</version>
 	</parent>
@@ -57,7 +57,7 @@
 
 		<!-- Apiphany -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -121,7 +121,7 @@
 
 		<!-- Testing -->
 		<dependency>
-			<groupId>io.github.raduking</groupId>
+			<groupId>com.boatyardx.apiphany</groupId>
 			<artifactId>apiphany-test</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
@@ -374,19 +374,5 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<repositories>
-		<repository>
-			<id>central-portal-snapshots</id>
-			<name>Central Portal Snapshots</name>
-			<url>https://central.sonatype.com/repository/maven-snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
 
 </project>
