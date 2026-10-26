@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>com.boatyardx.morphix</groupId>
 			<artifactId>morphix-all</artifactId>
-			<version>${morphix.version}</version>
+			<version>1.0.47</version>
 		</dependency>
 
 		<!-- Logging -->
