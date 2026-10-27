@@ -1,5 +1,14 @@
 ## Release Notes
 
+`1.3.0`
+
+- Upgraded `httpclient5` to `5.6.5`.
+- Upgraded Jackson 2 to `2.21.7`.
+- Upgraded Jackson 3 to `3.1.7`.
+- Upgraded `maven-compiler-plugin` to `3.16.0`.
+
+---
+
 `1.2.22`
 
 - Added `apiphany-okhttp`, a plugin library adding OkHttp support.

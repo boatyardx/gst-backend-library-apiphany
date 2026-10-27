@@ -13,7 +13,7 @@ import org.morphix.lang.collections.Iterables;
 import org.morphix.reflection.Constructors;
 import org.morphix.reflection.Fields;
 import org.morphix.runtime.OptionalLibrary;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestClient;

@@ -3,13 +3,17 @@ package org.apiphany.http;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.hc.core5.http.Header;
 import org.apiphany.io.OneShotInputStreamSupplier;
 import org.morphix.reflection.Constructors;
 import org.morphix.reflection.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
@@ -149,6 +153,21 @@ public class SpringHttpSupport {
 			return false;
 		}
 		return null != Fields.IgnoreAccess.get(restTemplateBuilder, "requestFactoryBuilder");
+	}
+
+	/**
+	 * Transforms an array of {@link Header}s to a map of headers.
+	 *
+	 * @param headers source headers
+	 * @return HTTP headers
+	 */
+	public static Map<String, List<String>> toHttpHeadersMap(final HttpHeaders headers) {
+		var httpHeaders = new HashMap<String, List<String>>();
+		if (null == headers) {
+			return httpHeaders;
+		}
+		headers.forEach(httpHeaders::put);
+		return httpHeaders;
 	}
 
 	/**

@@ -52,7 +52,7 @@ Support is being developed for other HTTP clients like Netty, Jersey, etc. If yo
 
 ### Releases
 
-Current release `1.2.22`
+Current release `1.3.0`
 
 ### Getting Started
 
@@ -62,7 +62,7 @@ Maven (internal fork): add this dependency to your `pom.xml`
 <dependency>
     <groupId>com.boatyardx.apiphany</groupId>
     <artifactId>apiphany</artifactId>
-    <version>1.2.22</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
