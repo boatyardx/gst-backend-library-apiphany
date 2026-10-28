@@ -3,11 +3,9 @@ package org.apiphany.http;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hc.core5.http.Header;
 import org.apiphany.io.OneShotInputStreamSupplier;
 import org.morphix.reflection.Constructors;
 import org.morphix.reflection.Fields;
@@ -22,6 +20,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.web.client.RestClient;
 
 /**
@@ -156,17 +155,17 @@ public class SpringHttpSupport {
 	}
 
 	/**
-	 * Transforms an array of {@link Header}s to a map of headers.
+	 * Transforms an {@link HttpHeaders} object to a map of headers.
 	 *
 	 * @param headers source headers
 	 * @return HTTP headers
 	 */
 	public static Map<String, List<String>> toHttpHeadersMap(final HttpHeaders headers) {
-		var httpHeaders = new HashMap<String, List<String>>();
+		Map<String, List<String>> httpHeaders = new LinkedCaseInsensitiveMap<>();
 		if (null == headers) {
 			return httpHeaders;
 		}
-		headers.forEach(httpHeaders::put);
+		headers.forEach((key, values) -> httpHeaders.put(key, new ArrayList<>(values)));
 		return httpHeaders;
 	}
 

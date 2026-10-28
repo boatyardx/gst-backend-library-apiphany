@@ -69,7 +69,7 @@
 		<slf4j.version>2.0.18</slf4j.version>
 		<httpclient5.version>5.6.5</httpclient5.version>
 		<okhttp.version>4.12.0</okhttp.version>
-		<spring.version>6.2.19</spring.version>
+		<spring.version>7.0.10</spring.version>
 		<spring.boot.version>4.1.2</spring.boot.version>
 
 		<!-- Java / Maven properties -->
