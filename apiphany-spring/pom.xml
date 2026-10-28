@@ -90,6 +90,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-restclient</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Apache HTTP Client 5 -->
