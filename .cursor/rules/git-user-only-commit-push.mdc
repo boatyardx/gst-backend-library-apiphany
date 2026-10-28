@@ -1,0 +1,29 @@
+---
+description: Only the user may git commit or push; agents must never do either
+alwaysApply: true
+---
+
+# Git commit and push — user only
+
+The repository owner is the **only** person who creates commits or updates remotes.
+
+## Agents must NOT
+
+- Run `git commit`, `git merge` (when it would create a commit), `git cherry-pick` (when it would commit), or any other command that creates or rewrites commits on the user's behalf
+- Run `git push`, `git push --force`, or publish branches/tags to remotes
+- Amend, rebase with commit creation, or complete a merge with `git commit` unless the user **explicitly** asks for that exact action in the current message
+
+## Agents MAY
+
+- Edit files, run tests, stage changes with `git add` **only if the user asked for staging**, or leave changes unstaged
+- Run read-only git commands (`git status`, `git diff`, `git log`, `git show`, etc.)
+- Prepare suggested commit messages or PR text for the user to use manually
+- Explain what the user should run to commit or push themselves
+
+## When the user wants a commit or push
+
+Wait for clear wording such as "commit this", "create a commit", or "push to origin". If intent is ambiguous, ask before committing or pushing.
+
+## Merge and sync work
+
+Bringing in code from another repo or branch is fine (diffs, file copies, conflict resolution). **Stop before `git commit`** and tell the user the tree is ready for them to review and commit.
