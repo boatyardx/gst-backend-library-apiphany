@@ -101,7 +101,7 @@ pipeline {
             script {
                MAVEN_DEPLOY_REPO = 'azure-maven-repo-release'
                sh 'mvn --settings $MVN_SETTINGS versions:set -DnewVersion=${RELEASE_VERSION} -DprocessAllModules=true -DgenerateBackupPoms=false'
-               sh "mvn --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-test,apiphany-core,apiphany-httpclient5,apiphany-okhttp,apiphany-spring -am"
+               sh "mvn -ntp --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-test,apiphany-core,apiphany-httpclient5,apiphany-okhttp,apiphany-spring -am"
                appendToBuildDescription("${RELEASE_VERSION}")
             }
         }
