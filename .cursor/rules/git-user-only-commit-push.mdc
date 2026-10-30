@@ -1,29 +1,34 @@
 ---
-description: Only the user may git commit or push; agents must never do either
+description: Only the user may run git write operations (commit, push, merge, rebase); agents edit files only
 alwaysApply: true
 ---
 
-# Git commit and push — user only
+# Git write operations — user only
 
-The repository owner is the **only** person who creates commits or updates remotes.
+The repository owner is the **only** person who runs git commands that change history, remotes, or merge state.
 
 ## Agents must NOT
 
-- Run `git commit`, `git merge` (when it would create a commit), `git cherry-pick` (when it would commit), or any other command that creates or rewrites commits on the user's behalf
+- Run `git commit`, `git merge`, `git rebase`, `git cherry-pick`, `git am`, or any command that creates, rewrites, or concludes history (including `git merge --continue`, `git rebase --continue`, `git cherry-pick --continue`)
+- Start or leave an in-progress merge/rebase/cherry-pick (e.g. `git merge`, `git merge --no-commit`, `git rebase`, `git cherry-pick`) — even when the user asks to bring in another branch or repo
 - Run `git push`, `git push --force`, or publish branches/tags to remotes
-- Amend, rebase with commit creation, or complete a merge with `git commit` unless the user **explicitly** asks for that exact action in the current message
+- Run `git reset` (any mode), `git checkout`/`git restore` to discard the user’s work, or other destructive history/working-tree git operations unless the user explicitly requests that exact command in the current message
+- Run `git add` / stage unless the user explicitly asked to stage in the current message
+
+## Syncing from another branch or repo
+
+When the user wants changes from another branch or checkout (e.g. upstream `develop` in another path):
+
+- **Do:** compare trees with read-only git (`git diff`, `git show`, `git log`) or by reading files on disk; **edit or copy file contents** in the working tree so the result matches what they asked for; resolve conflicts in file text, not with `git merge`
+- **Do not:** use `git merge`, `git cherry-pick`, or any workflow that sets MERGE_HEAD / leaves “merging” state — the user performs merges and commits themselves
 
 ## Agents MAY
 
-- Edit files, run tests, stage changes with `git add` **only if the user asked for staging**, or leave changes unstaged
+- Edit files in the working tree (unstaged by default)
 - Run read-only git commands (`git status`, `git diff`, `git log`, `git show`, etc.)
-- Prepare suggested commit messages or PR text for the user to use manually
-- Explain what the user should run to commit or push themselves
+- Prepare suggested commit messages, merge commands, or PR text for the user to run manually
+- Explain what the user should run to commit, merge, push, or rebase themselves
 
-## When the user wants a commit or push
+## When the user wants a commit, merge, push, or rebase
 
-Wait for clear wording such as "commit this", "create a commit", or "push to origin". If intent is ambiguous, ask before committing or pushing.
-
-## Merge and sync work
-
-Bringing in code from another repo or branch is fine (diffs, file copies, conflict resolution). **Stop before `git commit`** and tell the user the tree is ready for them to review and commit.
+Wait for clear wording such as “commit this”, “merge develop”, “push to origin”, or “rebase onto …”. If intent is ambiguous, ask. **Never** run those commands on the user’s behalf unless they explicitly ask for that exact git operation in the current message (this repo’s default is: user only).
