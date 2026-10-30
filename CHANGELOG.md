@@ -2,6 +2,18 @@
 
 `1.3.1`
 
+- Preserved header insertion order in `Headers.of()`.
+- Added `Headers.addTo()` overloads for opt-in header value normalization.
+- Added `HeaderValues.normalize(String)` and `DANGEROUS_CHARACTERS` for dangerous-character normalization.
+- Added `Strings.isEnvelopedBy(String, char)` and `isNotEnvelopedBy(String, char)`.
+- Added `install.sh` to install all Maven modules with test output redirected to reports.
+- Upgraded Jackson 2 to `2.21.8`.
+- Upgraded Jackson 3 to `3.1.8`.
+- Upgraded `logback-core` to `1.6.6`.
+- Upgraded `org.eclipse.jdt.core` to `3.47.0`.
+- Upgraded `code-format` to `1.1.0`.
+- Pinned Jackson 2 and 3 optional dependencies in `apiphany-spring` to `${jackson2.version}` and `${jackson3.version}`.
+
 ---
 
 `1.3.0`
