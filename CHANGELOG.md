@@ -7,7 +7,10 @@
 - Added `HeaderValues.normalize(String)` and `HeaderValues.DANGEROUS_CHARACTERS` for dangerous-character normalization.
 - Added `Strings.isEnvelopedBy(String, char)` to check if a string starts and ends with the given character.
 - Added `Strings.isNotEnvelopedBy(String, char)` to check if a string does not start and end with the given character.
-- Changed `Headers.contains` to compare header values case-sensitively by default.
+- Added `Headers.resolveName` to look up header names case-insensitively in a header map.
+- Changed `Headers.get`, `Headers.contains`, and `Headers.addTo` to use case-insensitive header name resolution.
+- Header value checks in `Headers.contains` remain case-sensitive by default; use the `BiPredicate` overload for other comparisons.
+- Added `Strings.equalsIgnoreCase(String, String)` for null-safe case-insensitive string equality.
 - Preserved header insertion order when sending requests in Apache HttpClient 5 and OkHttp clients.
 - Pinned Jackson `jackson-core` optional dependencies in `apiphany-core` and `apiphany-spring` to `${jackson2.version}` and `${jackson3.version}`.
 - Added `install.sh` to install all Maven modules with test output redirected to reports.
