@@ -84,9 +84,7 @@ pipeline {
             // note that using readMavenPom step is not recommended
             // see https://jenkins.io/doc/pipeline/steps/pipeline-utility-steps/#readmavenpom-read-a-maven-project-file)
             def projectVersion = sh script: 'mvn --settings $MVN_SETTINGS help:evaluate -Dexpression=project.version -q -DforceStdout', returnStdout: true
-            // Build version includes the date time formatter
-            BUILD_DATE_FORMATTED = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmSS"))
-            env.RELEASE_VERSION = "${projectVersion}-${BUILD_DATE_FORMATTED}-${env.BUILD_TYPE}"
+            env.RELEASE_VERSION = "${projectVersion}"
             echo "Build version ${RELEASE_VERSION}"
           }
         }
@@ -98,12 +96,12 @@ pipeline {
 
       steps {
         withCredentials([file(credentialsId: 'maven-credentials', variable: 'MVN_SETTINGS')]) {
-            script {
-               MAVEN_DEPLOY_REPO = 'azure-maven-repo-release'
-               sh 'mvn --settings $MVN_SETTINGS versions:set -DnewVersion=${RELEASE_VERSION} -DprocessAllModules=true -DgenerateBackupPoms=false'
-               sh "mvn -ntp --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-test,apiphany-core,apiphany-httpclient5,apiphany-okhttp,apiphany-spring -am"
-               appendToBuildDescription("${RELEASE_VERSION}")
-            }
+          script {
+            MAVEN_DEPLOY_REPO = 'azure-maven-repo-release'
+            sh 'mvn --settings $MVN_SETTINGS versions:set -DnewVersion=${RELEASE_VERSION} -DprocessAllModules=true -DgenerateBackupPoms=false'
+            sh "mvn -ntp --settings $MVN_SETTINGS deploy -DskipTests=true -DrepositoryId=$MAVEN_DEPLOY_REPO -pl .,apiphany-test,apiphany-core,apiphany-httpclient5,apiphany-okhttp,apiphany-spring -am"
+            appendToBuildDescription("${RELEASE_VERSION}")
+          }
         }
       }
     }

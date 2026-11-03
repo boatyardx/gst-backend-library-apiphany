@@ -8,11 +8,14 @@ import org.apiphany.lang.Strings;
 import org.apiphany.security.Sensitive;
 
 /**
- * Represents a node in a chain of responsibility for resolving HTTP header values. Each instance can either handle a
- * header request directly or delegate it to the next {@link HeaderValues} in the chain.
+ * Represents a node in a chain of responsibility for resolving header values. Each instance can either handle a header
+ * request directly or delegate it to the next {@link HeaderValues} in the chain.
  * <p>
  * By default, this implementation returns an empty list for all header requests, serving as a base class that can be
- * extended for custom behavior.
+ * extended for custom behavior but also allowing for delegation to subsequent handlers in the chain.
+ * <p>
+ * This class is also intended to be used as the last element in the chain, where it can provide default behavior
+ * (returning an empty list) when no other handler can resolve the header.
  *
  * @author Radu Sebastian LAZIN
  */
@@ -21,7 +24,12 @@ public class HeaderValues {
 	/**
 	 * The string used to redact sensitive information.
 	 */
-	public static final String REDACTED = Sensitive.Value.REDACTED;
+	public static final List<String> REDACTED = Collections.singletonList(Sensitive.Value.REDACTED);
+
+	/**
+	 * An immutable list of dangerous characters that will be replaced whenever we add a header.
+	 */
+	public static final List<Character> DANGEROUS_CHARACTERS = List.of('\0', '\r', '\n');
 
 	/**
 	 * The next {@link HeaderValues} in the chain of responsibility. If {@code null}, this represents the end of the chain.
@@ -123,5 +131,21 @@ public class HeaderValues {
 	 */
 	public static <L, R> String value(final L lvalue, final R rvalue, final String separator) {
 		return String.join(separator, Strings.safeToString(lvalue), Strings.safeToString(rvalue));
+	}
+
+	/**
+	 * Normalizes dangerous characters in a header field value before it is added to a headers map.
+	 * <p>
+	 * Replace {@code CR}, {@code LF}, and {@code NUL} characters before processing or forwarding a header value.
+	 *
+	 * @param value the header field value
+	 * @return the normalized header field value
+	 */
+	public static String normalize(final String value) {
+		String normalizedValue = value;
+		for (char dangerousCharacter : DANGEROUS_CHARACTERS) {
+			normalizedValue = normalizedValue.replace(dangerousCharacter, ' ');
+		}
+		return normalizedValue;
 	}
 }

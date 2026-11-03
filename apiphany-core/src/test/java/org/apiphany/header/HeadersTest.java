@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -184,6 +185,38 @@ class HeadersTest {
 			assertThat(headers, equalTo(expected));
 		}
 
+		@Test
+		void shouldPreserveQuotedHeaderValue() {
+			Headers.addTo(headers, N2, "\"a,b with spaces\"");
+
+			assertThat(headers.get(N2), equalTo(List.of("\"a,b with spaces\"")));
+		}
+
+		@Test
+		void shouldPreserveDangerousHeaderValueByDefault() {
+			Headers.addTo(headers, N2, "safe\r\ninvalid");
+			Headers.addTo(headers, N2, List.of("invalid\n"));
+			Headers.addTo(headers, N2, new String[] { "invalid\0" });
+
+			assertThat(headers.get(N2), equalTo(List.of("safe\r\ninvalid", "invalid\n", "invalid\0")));
+		}
+
+		@Test
+		void shouldNormalizeDangerousHeaderValueWhenExplicitlyRequested() {
+			Headers.addTo(headers, N2, "safe\r\ninvalid", HeaderValues::normalize);
+			Headers.addTo(headers, N2, List.of("invalid\n"), HeaderValues::normalize);
+			Headers.addTo(headers, N2, new String[] { "invalid\0" }, HeaderValues::normalize);
+
+			assertThat(headers.get(N2), equalTo(List.of("safe  invalid", "invalid ", "invalid ")));
+		}
+
+		@Test
+		void shouldNormalizeMapHeaderValuesWhenExplicitlyRequested() {
+			Headers.addTo(headers, Map.of(N2, "safe\r\ninvalid"), HeaderValues::normalize);
+
+			assertThat(headers.get(N2), equalTo(List.of("safe  invalid")));
+		}
+
 		@ParameterizedTest
 		@MethodSource("provideNullAndEmptyValues")
 		void shouldNotAddNullHeaderValueToExistingHeaderButAddHeader(final String v1, final String v2) {
@@ -260,6 +293,31 @@ class HeadersTest {
 					Arguments.of("", ""),
 					Arguments.of(" ", " "));
 		}
+
+		@Test
+		void shouldPreserveOriginalHeaderNameWhenAddingWithDifferentCasing() {
+			Map<String, List<String>> headers = new LinkedHashMap<>();
+
+			Headers.addTo(headers, "Content-Type", "application/json");
+			Headers.addTo(headers, "content-type", "text/plain");
+
+			assertThat(headers.size(), equalTo(1));
+			assertThat(Headers.get("CONTENT-TYPE", headers), equalTo(List.of("application/json", "text/plain")));
+			assertThat(headers.keySet().iterator().next(), equalTo("Content-Type"));
+		}
+
+		@Test
+		void shouldPreserveOriginalHeaderNameWhenExistingValueIsNull() {
+			Map<String, List<String>> headers = new LinkedHashMap<>();
+			headers.put("Content-Type", null);
+
+			Headers.addTo(headers, "content-type", "text/plain");
+
+			assertThat(headers.size(), equalTo(1));
+			assertThat(headers.keySet().iterator().next(), equalTo("Content-Type"));
+			assertThat(headers.get("Content-Type"), equalTo(List.of("text/plain")));
+			assertThat(Headers.get("CONTENT-TYPE", headers), equalTo(List.of("text/plain")));
+		}
 	}
 
 	@Nested
@@ -275,6 +333,21 @@ class HeadersTest {
 		@Test
 		void shouldReturnTrueWhenCheckingExistingStringHeaderValueOnContains() {
 			boolean result = Headers.contains(N1, V1, headers);
+
+			assertTrue(result);
+		}
+
+		@Test
+		void shouldCompareHeaderValuesCaseSensitivelyByDefaultOnContains() {
+			boolean result = Headers.contains(N1, V1.toUpperCase(), headers);
+
+			assertFalse(result);
+		}
+
+		@Test
+		void shouldSupportCaseInsensitiveHeaderValueComparisonWhenExplicitlyRequestedOnContains() {
+			boolean result = Headers.contains(N1, V1.toUpperCase(), headerName -> Headers.get(headerName, headers),
+					String::equalsIgnoreCase);
 
 			assertTrue(result);
 		}
@@ -360,6 +433,17 @@ class HeadersTest {
 			assertThat(headerValues, notNullValue());
 			assertThat(headerValues, hasSize(0));
 		}
+
+		@Test
+		void shouldReturnEmptyListWhenExactHeaderNameHasNullValue() {
+			Map<String, List<String>> headers = new LinkedHashMap<>();
+			headers.put("Content-Type", null);
+			headers.put("content-type", List.of("text/plain"));
+
+			assertThat(Headers.get("Content-Type", headers), equalTo(Collections.emptyList()));
+			assertThat(Headers.get("content-type", headers), equalTo(List.of("text/plain")));
+			assertThat(Headers.get("CONTENT-TYPE", headers), equalTo(Collections.emptyList()));
+		}
 	}
 
 	@Nested
@@ -376,6 +460,16 @@ class HeadersTest {
 			expected.put(N2, List.of(V2));
 
 			assertThat(resultHeaders, equalTo(expected));
+		}
+
+		@Test
+		void shouldPreserveHeaderInsertionOrder() {
+			Map<String, List<String>> resultHeaders = Headers.of(
+					HeaderFunction.header("first", "1"),
+					HeaderFunction.header("second", "2"),
+					HeaderFunction.header("third", "3"));
+
+			assertThat(List.copyOf(resultHeaders.keySet()), equalTo(List.of("first", "second", "third")));
 		}
 
 		@Test
