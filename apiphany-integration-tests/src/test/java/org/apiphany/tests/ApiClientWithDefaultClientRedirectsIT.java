@@ -6,6 +6,7 @@ import org.apiphany.ApiClient;
 import org.apiphany.client.ClientProperties;
 import org.apiphany.tests.contract.ApiphanyContract;
 import org.apiphany.tests.contract.RedirectsContract;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -16,7 +17,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
  *
  * @author Radu Sebastian LAZIN
  */
-class ApiClientWithDefaultClientRedirectsIT implements ApiphanyContract {
+public class ApiClientWithDefaultClientRedirectsIT implements ApiphanyContract {
 
 	@RegisterExtension
 	private static final WireMockExtension wiremock =
@@ -28,6 +29,11 @@ class ApiClientWithDefaultClientRedirectsIT implements ApiphanyContract {
 	@Override
 	public WireMockExtension wiremock() {
 		return wiremock;
+	}
+
+	@BeforeEach
+	void resetWireMock() {
+		wiremock.resetAll();
 	}
 
 	@Override

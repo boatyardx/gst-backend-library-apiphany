@@ -41,7 +41,7 @@
 	</scm>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
+		<!-- empty -->
 	</properties>
 
 	<dependencies>

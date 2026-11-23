@@ -12,7 +12,9 @@ import org.apiphany.lang.Require;
 import org.apiphany.lang.Strings;
 import org.morphix.convert.ArrayConversions;
 import org.morphix.lang.JavaArrays;
+import org.morphix.lang.JavaObjects;
 import org.morphix.lang.Nullables;
+import org.morphix.lang.collections.Iterables;
 
 /**
  * Represents a parameter in the API context. When constructing request parameters prefer using the
@@ -117,14 +119,12 @@ public record RequestParameter(String name, List<String> values, Charset encodin
 	 * @return true if the object is multi-valued, false otherwise
 	 */
 	public static boolean isMultiValued(final Object object) {
-		if (null == object) {
-			return false;
-		}
 		return switch (object) {
+			case null -> false;
 			case Collection<?> collection -> true;
 			case Iterable<?> iterable -> true;
 			case Object[] array -> true;
-			case Object o when o.getClass().isArray() -> true;
+			case Object o when JavaObjects.isArray(o) -> true;
 			default -> false;
 		};
 	}
@@ -146,14 +146,12 @@ public record RequestParameter(String name, List<String> values, Charset encodin
 	 * @return the string representation of the value
 	 */
 	public static List<String> toValues(final Object object) {
-		if (null == object) {
-			return NOT_PRESENT;
-		}
 		return switch (object) {
+			case null -> NOT_PRESENT;
 			case Collection<?> collection -> toValues(collection);
 			case Iterable<?> iterable -> toValues(iterable);
 			case Object[] array -> toValues(array);
-			case Object o when o.getClass().isArray() -> toValues(JavaArrays.toArray(o));
+			case Object o when JavaObjects.isArray(o) -> toValues(JavaArrays.toArray(o));
 			default -> toValues(String.valueOf(object));
 		};
 	}
@@ -168,7 +166,7 @@ public record RequestParameter(String name, List<String> values, Charset encodin
 		if (null == string) {
 			return NOT_PRESENT;
 		}
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>(1);
 		list.add(string);
 		return list;
 	}
@@ -202,7 +200,7 @@ public record RequestParameter(String name, List<String> values, Charset encodin
 	 * @return the list of string representations of the values
 	 */
 	public static List<String> toValues(final Collection<?> collection) {
-		if (null == collection || collection.isEmpty()) {
+		if (Iterables.isEmpty(collection)) {
 			return NOT_PRESENT;
 		}
 		List<String> list = new ArrayList<>(collection.size());
