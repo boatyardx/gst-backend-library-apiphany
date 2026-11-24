@@ -1,5 +1,24 @@
 ## Release Notes
 
+`1.3.2`
+
+- Added `Strings.nonBlankOrDefault(String, String)` to return a default when the value is blank.
+- Added `Strings.nonBlankOrGet(String, Supplier)` to return a supplied default when the value is blank.
+- Changed `Headers.of` to use `CaseInsensitiveLinkedHashMap` from MorphiX.
+- Updated `ApacheHC5ExchangeClient` to use `CaseInsensitiveLinkedHashMap` from MorphiX.
+- Updated `OkHttpExchangeClient` to use `CaseInsensitiveLinkedHashMap` from MorphiX.
+- Upgraded `morphix-all` to `1.1.3`.
+- Upgraded Spring Boot to `4.1.3` for `apiphany-spring`.
+- Upgraded Spring to `7.0.11` for `apiphany-spring`.
+- Upgraded Spring Security to `7.2.0`.
+- Upgraded OkHttp to `5.5.1`, Maven users now resolve the JVM artifact as `okhttp-jvm`.
+- Upgraded Micrometer to `1.17.3`.
+- Upgraded `oauth2-oidc-sdk` to `11.39`.
+- Upgraded `logback-core` to `1.6.8`.
+- Upgraded `pitest-maven` to `1.30.2`.
+
+---
+
 `1.3.1`
 
 - Preserved header insertion order in `Headers.of()`.

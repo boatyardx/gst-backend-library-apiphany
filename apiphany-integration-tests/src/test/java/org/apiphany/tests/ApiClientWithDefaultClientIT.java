@@ -22,7 +22,9 @@ import org.apiphany.tests.contract.JsonContract;
 import org.apiphany.tests.contract.RedirectsContract;
 import org.apiphany.tests.contract.RetryContract;
 import org.apiphany.tests.contract.StreamContract;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
@@ -43,10 +45,11 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
  *
  * @author Radu Sebastian LAZIN
  */
-class ApiClientWithDefaultClientIT implements ApiphanyContract {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class ApiClientWithDefaultClientIT implements ApiphanyContract {
 
 	@RegisterExtension
-	private static final WireMockExtension wiremock =
+	private final WireMockExtension wiremock =
 			WireMockExtension.newInstance()
 					.options(options()
 							.dynamicPort())
@@ -55,6 +58,16 @@ class ApiClientWithDefaultClientIT implements ApiphanyContract {
 	@Override
 	public WireMockExtension wiremock() {
 		return wiremock;
+	}
+
+	@BeforeEach
+	void resetWireMock() {
+		wiremock.resetAll();
+	}
+
+	@Override
+	public ClientProperties clientProperties() {
+		return ApiphanyContract.super.clientProperties();
 	}
 
 	private abstract class NestedContract implements ApiphanyContract {
